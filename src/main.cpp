@@ -46,7 +46,7 @@ unsigned int nStakeMinAge = 60 * 60 * 24 * 1;	// minimum age for coin age: 1d
 unsigned int nStakeMaxAge = 60 * 60 * 24 * 90;	// stake age of full weight: 90d
 unsigned int nStakeTargetSpacing = 10 * 60;			// 10 minute block spacing
 
-int64 nChainStartTime = 1438153418;
+int64 nChainStartTime = 1417308818;
 int nCoinbaseMaturity = 30;
 CBlockIndex* pindexGenesisBlock = NULL;
 int nBestHeight = -1;
@@ -969,6 +969,7 @@ int64 GetProofOfWorkReward(int nHeight, int64 nFees, uint256 prevHash)
 		nSubsidy = 20000000 * COIN;	// 15 Million coins
 		return nSubsidy + nFees;
 	}
+
 
     // Subsidy is cut in half every 150,000 blocks, which will occur approximately every 3 years
     nSubsidy >>= (nHeight / 150000);
