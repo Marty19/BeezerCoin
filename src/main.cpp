@@ -2549,7 +2549,7 @@ bool LoadBlockIndex(bool fAllowNew)
         nStakeMaxAge = 60 * 60; // test net min age is 60 min
 		nModifierInterval = 60; // test modifier interval is 2 minutes
         nCoinbaseMaturity = 10; // test maturity is 10 blocks
-        nStakeTargetSpacing = 10 * 60; // test block spacing is 3 minutes
+        nStakeTargetSpacing = 10 * 60; // test block spacing is 10 minutes
     }
 
     //

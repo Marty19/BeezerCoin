@@ -30,8 +30,8 @@ static const unsigned int MAX_BLOCK_SIZE_GEN = MAX_BLOCK_SIZE/2;
 static const unsigned int MAX_BLOCK_SIGOPS = MAX_BLOCK_SIZE/50;
 static const unsigned int MAX_ORPHAN_TRANSACTIONS = MAX_BLOCK_SIZE/100;
 static const unsigned int MAX_INV_SZ = 50000;
-static const int64 MIN_TX_FEE = 1.0 * CENT;
-static const int64 MIN_RELAY_TX_FEE = 1.0 * CENT;
+static const int64 MIN_TX_FEE = CENT;
+static const int64 MIN_RELAY_TX_FEE = CENT;
 static const int64 MAX_MONEY = 50000000 * COIN;			// 50m
 static const int64 MAX_MINT_PROOF_OF_STAKE = 0.08 * COIN;	// 8% annual interest
 static const int64 MIN_TXOUT_AMOUNT = MIN_TX_FEE;
@@ -51,7 +51,7 @@ static const int fHaveUPnP = false;
 static const uint256 hashGenesisBlockOfficial("0x000001e59474e58d52a8f5abad8cc5bae87aa431611fd765c555e429a36626c4");
 static const uint256 hashGenesisBlockTestNet ("0x000001e59474e58d52a8f5abad8cc5bae87aa431611fd765c555e429a36626c4");
 
-static const int64 nMaxClockDrift = 10 * 60; // 10 Minutes
+static const int64 nMaxClockDrift = 2 * 60 * 60; // 2 Hours
 
 extern CScript COINBASE_FLAGS;
 
