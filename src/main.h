@@ -51,7 +51,7 @@ static const int fHaveUPnP = false;
 static const uint256 hashGenesisBlockOfficial("0x000001e59474e58d52a8f5abad8cc5bae87aa431611fd765c555e429a36626c4");
 static const uint256 hashGenesisBlockTestNet ("0x000001e59474e58d52a8f5abad8cc5bae87aa431611fd765c555e429a36626c4");
 
-static const int64 nMaxClockDrift = 2* 60 * 60; // 2 hours
+static const int64 nMaxClockDrift = 10 * 60; // 10 Minutes
 
 extern CScript COINBASE_FLAGS;
 
