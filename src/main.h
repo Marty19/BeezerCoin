@@ -1,4 +1,4 @@
-// Copyright (c) 2009-2010 Satoshi Nakamoto
+  // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2012 The Bitcoin developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
@@ -48,8 +48,8 @@ static const int fHaveUPnP = true;
 static const int fHaveUPnP = false;
 #endif
 
-static const uint256 hashGenesisBlockOfficial("0x000001e59474e58d52a8f5abad8cc5bae87aa431611fd765c555e429a36626c4");
-static const uint256 hashGenesisBlockTestNet ("0x000001e59474e58d52a8f5abad8cc5bae87aa431611fd765c555e429a36626c4");
+static const uint256 hashGenesisBlockOfficial("0x00000edcc946fefdc943cdc03a1efde7b81959646ceeeb195bf6c69326a8ea92");
+static const uint256 hashGenesisBlockTestNet ("0x00000edcc946fefdc943cdc03a1efde7b81959646ceeeb195bf6c69326a8ea92");
 
 static const int64 nMaxClockDrift = 10 * 60; // 10 Minutes
 

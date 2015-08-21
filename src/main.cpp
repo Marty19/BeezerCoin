@@ -46,7 +46,7 @@ unsigned int nStakeMinAge = 60 * 60 * 24 * 1;	// minimum age for coin age: 1d
 unsigned int nStakeMaxAge = 60 * 60 * 24 * 90;	// stake age of full weight: 90d
 unsigned int nStakeTargetSpacing = 10 * 60;			// 10 minute block spacing
 
-int64 nChainStartTime = 1417308818;
+int64 nChainStartTime = 1440169200;
 int nCoinbaseMaturity = 30;
 CBlockIndex* pindexGenesisBlock = NULL;
 int nBestHeight = -1;
@@ -2570,7 +2570,7 @@ bool LoadBlockIndex(bool fAllowNew)
             return false;
 
         // Genesis block
-        const char* pszTimestamp = "July 29, 2015, Windows 10 Released Today! 1438153418.";
+        const char* pszTimestamp = "July 29, 2015, Windows 10 Released Today! 1440169200.";
         CTransaction txNew;
         txNew.nTime = nChainStartTime;
         txNew.vin.resize(1);
@@ -2583,9 +2583,9 @@ bool LoadBlockIndex(bool fAllowNew)
         block.hashPrevBlock = 0;
         block.hashMerkleRoot = block.BuildMerkleTree();
         block.nVersion = 1;
-        block.nTime    = 1438153418;
+        block.nTime    = 1440169200;
         block.nBits    = bnProofOfWorkLimit.GetCompact();
-        block.nNonce   = 231820;
+        block.nNonce   = 1841795;
 
         if ( false && (block.GetHash() != hashGenesisBlock)) {
 
@@ -2612,7 +2612,7 @@ bool LoadBlockIndex(bool fAllowNew)
         }
 
 		
-        assert(block.hashMerkleRoot == uint256("89c560f55f7996be9d35588c751ebb4d4c6feb1fed930d77332f093e18c0c1b0"));
+        assert(block.hashMerkleRoot == uint256("f6b90d4bc479cc400932d661ad16a833dd12192df35b180997d02e2564196320"));
 		assert(block.GetHash() == (!fTestNet ? hashGenesisBlock : hashGenesisBlockTestNet));
 
         // Start new block file
