@@ -2960,6 +2960,25 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv)
             return true;
         }
 
+		// BeezerCoin: disconnect any known version prior 2.0.0
+        // as these have PoS not working and could serve us garbage
+        printf("connected subver %s\n", pfrom->strSubVer.c_str());
+        if (!strcmp(pfrom->strSubVer.c_str(),"/BeezerCoin:1.0.0/")
+            || !strcmp(pfrom->strSubVer.c_str(),"/BeezerCoin:1.0.0.1/")
+            || !strcmp(pfrom->strSubVer.c_str(),"/BeezerCoin:1.0.0.2/")
+            || !strcmp(pfrom->strSubVer.c_str(),"/BeezerCoin:1.0.0.3/")
+            || !strcmp(pfrom->strSubVer.c_str(),"/BeezerCoin:1.0.0.4/")
+            || !strcmp(pfrom->strSubVer.c_str(),"/BeezerCoin:1.0.0.5/")
+            || !strcmp(pfrom->strSubVer.c_str(),"")
+           )
+        {
+            printf("partner %s using obsolete client %s\n", pfrom->addr.ToString().c_str(), pfrom->strSubVer.c_str());
+            // immediate ban
+            pfrom->Misbehaving(100);
+            pfrom->fDisconnect = true;
+            return false;
+        }
+		
         // ppcoin: record my external IP reported by peer
         if (addrFrom.IsRoutable() && addrMe.IsRoutable())
             addrSeenByPeer = addrMe;
