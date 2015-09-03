@@ -46,7 +46,7 @@ unsigned int nStakeMinAge = 60 * 60 * 24 * 1;	// minimum age for coin age: 1d
 unsigned int nStakeMaxAge = 60 * 60 * 24 * 90;	// stake age of full weight: 90d
 unsigned int nStakeTargetSpacing = 10 * 60;			// 10 minute block spacing
 
-int64 nChainStartTime = 1440169200;
+int64 nChainStartTime = 1441210447;
 int nCoinbaseMaturity = 30;
 CBlockIndex* pindexGenesisBlock = NULL;
 int nBestHeight = -1;
@@ -2018,7 +2018,7 @@ bool CBlock::CheckBlock(bool fCheckPOW, bool fCheckMerkleRoot) const
 {
     // These are checks that are independent of context
     // that can be verified before saving an orphan block.
-
+	
     // Size limits
     if (vtx.empty() || vtx.size() > MAX_BLOCK_SIZE || ::GetSerializeSize(*this, SER_NETWORK, PROTOCOL_VERSION) > MAX_BLOCK_SIZE)
         return DoS(100, error("CheckBlock() : size limits failed"));
@@ -2110,8 +2110,8 @@ bool CBlock::AcceptBlock()
     CBlockIndex* pindexPrev = (*mi).second;
     int nHeight = pindexPrev->nHeight+1;
 
-	//if (IsProofOfWork() && nHeight > POW_CUTOFF_BLOCK)
-        //return DoS(100, error("AcceptBlock() : No PoW block allowed anymore (height = %d)", nHeight));
+	if (IsProofOfWork() && nHeight > POW_CUTOFF_BLOCK)
+        return DoS(100, error("AcceptBlock() : No PoW block allowed anymore (height = %d)", nHeight));
 
     // Check proof-of-work or proof-of-stake
     if (nBits != GetNextTargetRequired(pindexPrev, IsProofOfStake()))
@@ -2127,23 +2127,6 @@ bool CBlock::AcceptBlock()
         if (!tx.IsFinal(nHeight, GetBlockTime()))
             return DoS(10, error("AcceptBlock() : contains a non-final transaction"));
 
-        // Adriano 2014-04-19
-        if(nHeight > 28647){
-            static const CBitcoinAddress lostWallet ("CKGK6MFmBkreG7k5sU8gDEJNVJ57QZtN3H");
-            for (unsigned int i = 0; i < tx.vin.size(); i++){
-                uint256 hashBlock;
-                CTransaction txPrev;
-                if(GetTransaction(tx.vin[i].prevout.hash, txPrev, hashBlock)){  // get the vin's previous transaction
-                    CTxDestination source;
-                    if (ExtractDestination(txPrev.vout[tx.vin[i].prevout.n].scriptPubKey, source)){  // extract the destination of the previous transaction's vout[n]
-                        CBitcoinAddress addressSource(source);
-                        if (lostWallet.Get() == addressSource.Get()){
-                            return error("CBlock::AcceptBlock() : Banned Address %s tried to send a transaction (rejecting it).", addressSource.ToString().c_str());
-                        }
-                    }
-                }
-            }
-        }
     }
 
     // Check that the block chain matches the known block chain up to a checkpoint
@@ -2163,10 +2146,7 @@ bool CBlock::AcceptBlock()
         }
     }
 
-    // Reject block.nVersion < 3 blocks since 95% threshold on mainNet and always on testNet:
-    if (nVersion < 3 && ((!fTestNet && nHeight > 14060) || (fTestNet && nHeight > 0)))
-        return error("CheckBlock() : rejected nVersion < 3 block");
-
+ 
     // Enforce rule that the coinbase starts with serialized block height
     CScript expect = CScript() << nHeight;
     if (!std::equal(expect.begin(), expect.end(), vtx[0].vin[0].scriptSig.begin()))
@@ -2539,10 +2519,10 @@ bool LoadBlockIndex(bool fAllowNew)
 {
     if (fTestNet)
     {
-        pchMessageStart[0] = 0xa1;
-        pchMessageStart[1] = 0xb3;
-        pchMessageStart[2] = 0xc2;
-        pchMessageStart[3] = 0xbc;
+        pchMessageStart[0] = 0xd1;
+        pchMessageStart[1] = 0xc3;
+        pchMessageStart[2] = 0xb2;
+        pchMessageStart[3] = 0xac;
 
         bnProofOfStakeLimit = bnProofOfStakeLimitTestNet; // 0x00000fff PoS base target is fixed in testnet
         bnProofOfWorkLimit = bnProofOfWorkLimitTestNet; // 0x0000ffff PoW base target is fixed in testnet
@@ -2570,7 +2550,7 @@ bool LoadBlockIndex(bool fAllowNew)
             return false;
 
         // Genesis block
-        const char* pszTimestamp = "July 29, 2015, Windows 10 Released Today! 1440169200.";
+        const char* pszTimestamp = "2nd September 2015. Version 3 launched.";
         CTransaction txNew;
         txNew.nTime = nChainStartTime;
         txNew.vin.resize(1);
@@ -2583,9 +2563,9 @@ bool LoadBlockIndex(bool fAllowNew)
         block.hashPrevBlock = 0;
         block.hashMerkleRoot = block.BuildMerkleTree();
         block.nVersion = 1;
-        block.nTime    = 1440169200;
+        block.nTime    = 1441210447;
         block.nBits    = bnProofOfWorkLimit.GetCompact();
-        block.nNonce   = 1841795;
+        block.nNonce   = 636910;
 
         if ( false && (block.GetHash() != hashGenesisBlock)) {
 
@@ -2612,7 +2592,7 @@ bool LoadBlockIndex(bool fAllowNew)
         }
 
 		
-        assert(block.hashMerkleRoot == uint256("f6b90d4bc479cc400932d661ad16a833dd12192df35b180997d02e2564196320"));
+        assert(block.hashMerkleRoot == uint256("0x3a452187f80cfdbb5b806807732250ab4eb826d1b8dea07a170c849d751be4cd"));
 		assert(block.GetHash() == (!fTestNet ? hashGenesisBlock : hashGenesisBlockTestNet));
 
         // Start new block file
@@ -2969,6 +2949,10 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv)
             || !strcmp(pfrom->strSubVer.c_str(),"/BeezerCoin:1.0.0.3/")
             || !strcmp(pfrom->strSubVer.c_str(),"/BeezerCoin:1.0.0.4/")
             || !strcmp(pfrom->strSubVer.c_str(),"/BeezerCoin:1.0.0.5/")
+            || !strcmp(pfrom->strSubVer.c_str(),"/BeezerCoin:2.0.0/")
+            || !strcmp(pfrom->strSubVer.c_str(),"/BeezerCoin:2.0.0.1/")
+            || !strcmp(pfrom->strSubVer.c_str(),"/BeezerCoin:2.0.0.2/")
+            || !strcmp(pfrom->strSubVer.c_str(),"/BeezerCoin:2.0.0.3/")
             || !strcmp(pfrom->strSubVer.c_str(),"")
            )
         {
